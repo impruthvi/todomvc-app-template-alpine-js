@@ -13,27 +13,7 @@
 		></script>
 	</head>
 	<body>
-		<section
-			class="todoapp"
-			x-data="{
-			todos: [],
-			newTodo: '',
-			addTodo() {
-				this.todos.push({
-					id: Date.now(),
-					title: this.newTodo,
-					completed: false
-				});
-				this.newTodo = '';
-			},
-			get active() {
-				return this.todos.filter((t) => !t.completed);
-			},
-			deleteTodo(todo){
-				this.todos = this.todos.filter((t) => t.id !== todo.id)
-			}
-		}"
-		>
+		<section class="todoapp" x-data="todos()">
 			<header class="header">
 				<h1>todos</h1>
 				<input
@@ -52,17 +32,19 @@
 					<!-- These are here just to show the structure of the list items -->
 					<!-- List items should get the class `editing` when editing and `completed` when marked as completed -->
 					<template x-for="todo in todos">
-						<li :class="{completed: todo.completed}">
+						<li
+							:class="{ editing: todo === editingTodo, completed: todo.completed}"
+						>
 							<div class="view">
 								<input
 									class="toggle"
 									type="checkbox"
 									@click="todo.completed = !todo.completed"
 								/>
-								<label x-text="todo.title"></label>
+								<label x-text="todo.title" @dblclick="editTodo(todo)"></label>
 								<button class="destroy" @click="deleteTodo(todo)"></button>
 							</div>
-							<input class="edit" value="Create a TodoMVC template" />
+							<input class="edit" x-model="todo.title" @keyup.enter="updateTodo"/>
 						</li>
 					</template>
 				</ul>
@@ -83,8 +65,9 @@
 						<a href="#/completed">Completed</a>
 					</li>
 				</ul>
-				<!-- Hidden if no completed items are left ↓ -->
-				<button class="clear-completed">Clear completed</button>
+				<button class="clear-completed" x-show="completed.length">
+					Clear completed
+				</button>
 			</footer>
 		</section>
 		<footer class="info">
@@ -96,5 +79,6 @@
 		<!-- Scripts here. Don't remove ↓ -->
 		<script src="node_modules/todomvc-common/base.js"></script>
 		<script src="js/app.js"></script>
+		<script src="js/todos.js"></script>
 	</body>
 </html>
