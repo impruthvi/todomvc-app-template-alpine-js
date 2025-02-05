@@ -1,5 +1,6 @@
 window.todos = function () {
 	return {
+		filter: "all",
 		todos: [],
 		newTodo: "",
         editingTodo: null,
@@ -17,6 +18,15 @@ window.todos = function () {
         get completed() {
             return this.todos.filter((t) => t.completed);
         },
+
+		get filteredTodos() {
+			return {
+				all: this.todos,
+				active: this.active,
+				completed: this.completed,
+			}[this.filter];
+		},
+
 		deleteTodo(todo) {
 			this.todos = this.todos.filter((t) => t.id !== todo.id);
 		},
@@ -35,6 +45,9 @@ window.todos = function () {
 			todo.title = todo.cashedTitle;
 			this.editingTodo = null;
 			delete todo.cashedTitle;
-		}
+		},
+		clearCompleted() {
+			this.todos = this.active;
+		},
 	};
 };
