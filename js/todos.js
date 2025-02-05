@@ -21,10 +21,20 @@ window.todos = function () {
 			this.todos = this.todos.filter((t) => t.id !== todo.id);
 		},
         editTodo(todo) {
+			todo.cashedTitle = todo.title;
             this.editingTodo = todo;
         },
-		updateTodo() {
+		updateTodo(todo) {
+			if (todo.title.trim() === "") {
+				this.deleteTodo(todo);
+			}
+
 			this.editingTodo = null;
 		},
+		cancelTodo(todo) {
+			todo.title = todo.cashedTitle;
+			this.editingTodo = null;
+			delete todo.cashedTitle;
+		}
 	};
 };

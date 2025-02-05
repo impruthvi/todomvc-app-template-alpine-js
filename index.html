@@ -44,7 +44,7 @@
 								<label x-text="todo.title" @dblclick="editTodo(todo)"></label>
 								<button class="destroy" @click="deleteTodo(todo)"></button>
 							</div>
-							<input class="edit" x-model="todo.title" @keyup.enter="updateTodo"/>
+							<input class="edit" x-model="todo.title" @keyup.enter="updateTodo(todo)" @keyup.escape="cancelTodo(todo)"/>
 						</li>
 					</template>
 				</ul>
