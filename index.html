@@ -20,7 +20,8 @@
 		</header>
 		<!-- This section should be hidden by default and shown when there are todos -->
 		<section class="main" x-show="todos.length">
-			<input id="toggle-all" class="toggle-all" type="checkbox" />
+			<input id="toggle-all" class="toggle-all" type="checkbox" x-model="allCompleted"
+				@click="toggleAllTodos" />
 			<label for="toggle-all">Mark all as complete</label>
 			<ul class="todo-list">
 				<!-- These are here just to show the structure of the list items -->
@@ -28,7 +29,8 @@
 				<template x-for="todo in filteredTodos">
 					<li :class="{ editing: todo === editingTodo, completed: todo.completed}">
 						<div class="view">
-							<input class="toggle" type="checkbox" @click="todo.completed = !todo.completed" x-model="todo.completed"/>
+							<input class="toggle" type="checkbox" @click="todo.completed = !todo.completed"
+								x-model="todo.completed" />
 							<label x-text="todo.title" @dblclick="editTodo(todo)"></label>
 							<button class="destroy" @click="deleteTodo(todo)"></button>
 						</div>
@@ -40,7 +42,8 @@
 		</section>
 		<footer class="footer" x-show="todos.length">
 			<span class="todo-count">
-				<strong x-text="active.length"></strong> <span x-text="active.length === 1 ? 'item' : 'items'"></span> left
+				<strong x-text="active.length"></strong> <span x-text="active.length === 1 ? 'item' : 'items'"></span>
+				left
 			</span>
 			<ul class="filters">
 				<li>

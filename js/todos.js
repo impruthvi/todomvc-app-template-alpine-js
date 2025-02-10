@@ -21,6 +21,9 @@ window.todos = function () {
         get completed() {
             return this.todos.filter((t) => t.completed);
         },
+		get allCompleted() {
+			return this.todos.length === this.completed.length;
+		},
 
 		get filteredTodos() {
 			return {
@@ -52,5 +55,9 @@ window.todos = function () {
 		clearCompleted() {
 			this.todos = this.active;
 		},
+		toggleAllTodos() {
+			const allCompleted = this.allCompleted;
+			this.todos.forEach((t) => (t.completed = !allCompleted));
+		}
 	};
 };
