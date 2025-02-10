@@ -29,7 +29,7 @@
 				<template x-for="todo in filteredTodos">
 					<li :class="{ editing: todo === editingTodo, completed: todo.completed}">
 						<div class="view">
-							<input class="toggle" type="checkbox" @click="todo.completed = !todo.completed"
+							<input class="toggle" type="checkbox" @click="toggleTodo(todo)"
 								x-model="todo.completed" />
 							<label x-text="todo.title" @dblclick="editTodo(todo)"></label>
 							<button class="destroy" @click="deleteTodo(todo)"></button>

@@ -1,7 +1,18 @@
+window.todoStore = {
+	todos: JSON.parse(localStorage.getItem("todo-store") || '[]'),
+
+	save ()	{
+		localStorage.setItem("todo-store", JSON.stringify(this.todos));
+	}
+
+}
+
 window.todos = function () {
 	return {
+
+		...todoStore,
+
 		filter: "all",
-		todos: [],
 		newTodo: "",
         editingTodo: null,
 		addTodo() {
@@ -13,6 +24,9 @@ window.todos = function () {
 				title: this.newTodo,
 				completed: false,
 			});
+
+			this.save();
+
 			this.newTodo = "";
 		},
 		get active() {
@@ -35,6 +49,7 @@ window.todos = function () {
 
 		deleteTodo(todo) {
 			this.todos = this.todos.filter((t) => t.id !== todo.id);
+			this.save();
 		},
         editTodo(todo) {
 			todo.cashedTitle = todo.title;
@@ -46,6 +61,7 @@ window.todos = function () {
 			}
 
 			this.editingTodo = null;
+			this.save();
 		},
 		cancelTodo(todo) {
 			todo.title = todo.cashedTitle;
@@ -54,10 +70,16 @@ window.todos = function () {
 		},
 		clearCompleted() {
 			this.todos = this.active;
+			this.save();
 		},
 		toggleAllTodos() {
 			const allCompleted = this.allCompleted;
 			this.todos.forEach((t) => (t.completed = !allCompleted));
+			this.save();
+		},
+		toggleTodo(todo) {
+			todo.completed = !todo.completed;
+			this.save();
 		}
 	};
 };
