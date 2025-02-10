@@ -1,40 +1,26 @@
 window.todoStore = {
-	todos: JSON.parse(localStorage.getItem("todo-store") || '[]'),
+	todos: JSON.parse(localStorage.getItem("todo-store") || "[]"),
 
-	save ()	{
+	save() {
 		localStorage.setItem("todo-store", JSON.stringify(this.todos));
-	}
-
-}
+	},
+};
 
 window.todos = function () {
 	return {
-
 		...todoStore,
-
 		filter: "all",
 		newTodo: "",
-        editingTodo: null,
-		addTodo() {
-			if (!this.newTodo.trim()) {
-				return;
-			}
-			this.todos.push({
-				id: Date.now(),
-				title: this.newTodo,
-				completed: false,
-			});
+		editingTodo: null,
 
-			this.save();
-
-			this.newTodo = "";
-		},
 		get active() {
 			return this.todos.filter((t) => !t.completed);
 		},
-        get completed() {
-            return this.todos.filter((t) => t.completed);
-        },
+
+		get completed() {
+			return this.todos.filter((t) => t.completed);
+		},
+
 		get allCompleted() {
 			return this.todos.length === this.completed.length;
 		},
@@ -47,14 +33,30 @@ window.todos = function () {
 			}[this.filter];
 		},
 
+		addTodo() {
+			if (!this.newTodo.trim()) return;
+
+			this.todos.push({
+				id: Date.now(),
+				title: this.newTodo,
+				completed: false,
+			});
+
+			this.save();
+
+			this.newTodo = "";
+		},
+
 		deleteTodo(todo) {
 			this.todos = this.todos.filter((t) => t.id !== todo.id);
 			this.save();
 		},
-        editTodo(todo) {
+
+		editTodo(todo) {
 			todo.cashedTitle = todo.title;
-            this.editingTodo = todo;
-        },
+			this.editingTodo = todo;
+		},
+
 		updateTodo(todo) {
 			if (todo.title.trim() === "") {
 				this.deleteTodo(todo);
@@ -63,23 +65,27 @@ window.todos = function () {
 			this.editingTodo = null;
 			this.save();
 		},
+
 		cancelTodo(todo) {
 			todo.title = todo.cashedTitle;
 			this.editingTodo = null;
 			delete todo.cashedTitle;
 		},
+
 		clearCompleted() {
 			this.todos = this.active;
 			this.save();
 		},
+
 		toggleAllTodos() {
 			const allCompleted = this.allCompleted;
 			this.todos.forEach((t) => (t.completed = !allCompleted));
 			this.save();
 		},
+
 		toggleTodo(todo) {
 			todo.completed = !todo.completed;
 			this.save();
-		}
+		},
 	};
 };
