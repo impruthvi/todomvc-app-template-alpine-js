@@ -5,6 +5,9 @@ window.todos = function () {
 		newTodo: "",
         editingTodo: null,
 		addTodo() {
+			if (!this.newTodo.trim()) {
+				return;
+			}
 			this.todos.push({
 				id: Date.now(),
 				title: this.newTodo,
